@@ -1,63 +1,62 @@
 package com.example;
 
-import java.util.Scanner;
-
 public class Calculator {
-    public static int add(int a, int b) {
+    public int add(int a, int b) {
         return a + b;
     }
 
-    public static int subtract(int a, int b) {
+    public int subtract(int a, int b) {
         return a - b;
     }
 
-    public static int multiply(int a, int b) {
+    public int multiply(int a, int b) {
         return a * b;
     }
 
-    public static float divide(int a, int b) {
-        if (b == 0) {
-            System.out.println("Ошибка: деление на ноль");
-            System.exit(1);
-        }
-        return (float) a / b;
+    public float divide(float a, int b) {
+        return a / b;
     }
 
     public static void calc(String expression) {
-        String[] tokens = expression.split(" ");
-        if (tokens.length != 3) {
-            System.out.println("Ошибка: некорректный формат ввода");
-            return;
+        Calculator calculator = new Calculator();
+        String[] parts = expression.split(" ");
+        int num1 = 0;
+        try {
+            num1 = Integer.parseInt(parts[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: неправильный формат");
+            System.exit(1);
         }
-        int a = Integer.parseInt(tokens[0]);
-        int b = Integer.parseInt(tokens[2]);
-        char operator = tokens[1].charAt(0);
-        switch (operator) {
-            case '+':
-                System.out.println(add(a, b));
+        int num2 = 0;
+        try {
+            num2 = Integer.parseInt(parts[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: неправильный формат");
+            System.exit(1);
+        }
+        float result = 0f;
+        switch (parts[1]) {
+            case "+":
+                result = calculator.add(num1, num2);
                 break;
-            case '-':
-                System.out.println(subtract(a, b));
+            case "-":
+                result = calculator.subtract(num1, num2);
                 break;
-            case '*':
-                System.out.println(multiply(a, b));
+            case "*":
+                result = calculator.multiply(num1, num2);
                 break;
-            case '/':
-                System.out.println(divide(a, b));
+            case "/":
+                if (num2 == 0) {
+                    System.out.println("Ошибка: Деление на ноль");
+                    System.exit(1);
+                }
+                result = calculator.divide((float) num1, num2);
                 break;
             default:
-                System.out.println("Ошибка: некорректный оператор");
+                System.out.println("Ошибка: Неизвестная операция");
+                System.exit(1);
+                break;
         }
+        System.out.println("Результат: " + result);
     }
-
-public class Main {
-
-    public static void main(String[] args) {
-        try (Scanner in = new Scanner(System.in)) {
-            System.out.println("первое число, операция(+, -, *, /), второе число.между числами и знаком пробел");      
-        String expression = in.nextLine();
-        Calculator.calc(expression);
-     }   
-    }
-}
 }
