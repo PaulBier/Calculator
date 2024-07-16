@@ -1,62 +1,81 @@
 package com.example;
 
-public class Calculator {
-    public int add(int a, int b) {
-        return a + b;
-    }
-
-    public int subtract(int a, int b) {
-        return a - b;
-    }
-
-    public int multiply(int a, int b) {
-        return a * b;
-    }
-
-    public float divide(float a, int b) {
-        return a / b;
-    }
-
-    public static void calc(String expression) {
-        Calculator calculator = new Calculator();
-        String[] parts = expression.split(" ");
-        int num1 = 0;
-        try {
-            num1 = Integer.parseInt(parts[0]);
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка: неправильный формат");
-            System.exit(1);
-        }
-        int num2 = 0;
-        try {
-            num2 = Integer.parseInt(parts[2]);
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка: неправильный формат");
-            System.exit(1);
-        }
-        float result = 0f;
-        switch (parts[1]) {
-            case "+":
-                result = calculator.add(num1, num2);
+public class Calculator { 
+ 
+    private int a; 
+    private int b; 
+    private String operation; 
+ 
+    public Calculator(int a, int b, String operation) { 
+        this.a = a; 
+        this.b = b; 
+        this.operation = operation; 
+    } 
+ 
+    public int add() { 
+        return a + b; 
+    } 
+ 
+    public int subtract() { 
+        return a - b; 
+    } 
+ 
+    public int multiply() { 
+        return a * b; 
+    } 
+ 
+    public float divide() { 
+        return (float) a / b; 
+    } 
+ 
+    public float calculate() { 
+        float result = 0f; 
+        switch (operation) { 
+            case "+": 
+                result = add(); 
+                break; 
+            case "-": 
+                result = subtract(); 
+                break; 
+            case "*": 
+                result = multiply(); 
+                break; 
+            case "/": 
+                result = divide();
                 break;
-            case "-":
-                result = calculator.subtract(num1, num2);
-                break;
-            case "*":
-                result = calculator.multiply(num1, num2);
-                break;
-            case "/":
-                if (num2 == 0) {
-                    System.out.println("Ошибка: Деление на ноль");
-                    System.exit(1);
-                }
-                result = calculator.divide((float) num1, num2);
-                break;
-            default:
-                System.out.println("Ошибка: Неизвестная операция");
-                System.exit(1);
-                break;
-        }
-        System.out.println("Результат: " + result);
-    }
+            default: 
+                System.out.println("Ошибка: Неизвестная операция"); 
+                System.exit(1); 
+                break; 
+        } 
+        return result; 
+    } 
+ 
+    public static void calc(String expression) { 
+        String[] parts = expression.split(" "); 
+ 
+        if (parts.length != 3) { 
+            System.out.println("Ошибка: Неверный формат ввода"); 
+            System.exit(1); 
+        } 
+ 
+        int num1 = parseNumber(parts[0]); 
+        int num2 = parseNumber(parts[2]); 
+        String operator = parts[1]; 
+ 
+        Calculator calculator = new Calculator(num1, num2, operator); 
+        float result = calculator.calculate(); 
+ 
+        System.out.println("Результат: " + result); 
+    } 
+ 
+    private static int parseNumber(String number) { 
+        try { 
+            return Integer.parseInt(number); 
+        } catch (NumberFormatException e) { 
+            System.out.println("Ошибка: Неверный формат ввода"); 
+            System.exit(1); 
+            return 0; 
+        } 
+    } 
 }
